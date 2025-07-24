@@ -1,0 +1,1949 @@
+@prefix : <http://www.semanticweb.org/financial_risk#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix xml: <http://www.w3.org/XML/1998/namespace> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix fibo: <http://www.omg.org/spec/EDMC-FIBO/> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix time: <http://www.w3.org/2006/time#> .
+@base <http://www.semanticweb.org/financial_risk#> .
+
+<http://www.semanticweb.org/financial_risk> rdf:type owl:Ontology ;
+                                             owl:imports fibo: ;
+                                             rdfs:comment "A comprehensive ontology for financial risk management incorporating Bank of Albania, INSTAT, and international financial data" ;
+                                             rdfs:label "Financial Risk Management Ontology" ;
+                                             owl:versionInfo "1.0" .
+
+#################################################################
+#    Object Properties
+#################################################################
+
+###  http://www.semanticweb.org/financial_risk#exposedToRisk
+:exposedToRisk rdf:type owl:ObjectProperty ;
+               rdfs:domain :FinancialEntity ;
+               rdfs:range :RiskCategory ;
+               rdfs:comment "Financial entity is exposed to specific risk" ;
+               rdfs:label "exposed to risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasInsurancePolicy
+:hasInsurancePolicy rdf:type owl:ObjectProperty ;
+                    rdfs:domain :Person ;
+                    rdfs:range :InsurancePolicy ;
+                    rdfs:comment "Person has an insurance policy" ;
+                    rdfs:label "has insurance policy" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasInvestment
+:hasInvestment rdf:type owl:ObjectProperty ;
+               rdfs:domain :Person ;
+               rdfs:range :Investment ;
+               rdfs:comment "Person has an investment" ;
+               rdfs:label "has investment" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasLoan
+:hasLoan rdf:type owl:ObjectProperty ;
+         rdfs:domain :Person ;
+         rdfs:range :Loan ;
+         rdfs:comment "Person has a loan" ;
+         rdfs:label "has loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasRetirementAccount
+:hasRetirementAccount rdf:type owl:ObjectProperty ;
+                      rdfs:domain :Person ;
+                      rdfs:range :RetirementAccount ;
+                      rdfs:comment "Person has a retirement account" ;
+                      rdfs:label "has retirement account" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasRiskCategory
+:hasRiskCategory rdf:type owl:ObjectProperty ;
+                 rdfs:range :RiskCategory ;
+                 rdfs:comment "Risk profile includes specific risk categories" ;
+                 rdfs:label "has risk category" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasRiskProfile
+:hasRiskProfile rdf:type owl:ObjectProperty ;
+                rdfs:domain :Person ;
+                rdfs:comment "Person has a specific risk profile" ;
+                rdfs:label "has risk profile" .
+
+
+###  http://www.semanticweb.org/financial_risk#influencedBy
+:influencedBy rdf:type owl:ObjectProperty ,
+                       owl:TransitiveProperty ;
+              rdfs:domain :RiskCategory ;
+              rdfs:range :EconomicIndicator ;
+              rdfs:comment "Risk category is influenced by economic indicators" ;
+              rdfs:label "influenced by" .
+
+
+###  http://www.semanticweb.org/financial_risk#issuedBy
+:issuedBy rdf:type owl:ObjectProperty ;
+          owl:inverseOf :issues ;
+          rdfs:domain :Loan ;
+          rdfs:range :Bank ;
+          rdfs:comment "Loan is issued by a bank" ;
+          rdfs:label "issued by" .
+
+
+###  http://www.semanticweb.org/financial_risk#issues
+:issues rdf:type owl:ObjectProperty .
+
+
+###  http://www.semanticweb.org/financial_risk#managedBy
+:managedBy rdf:type owl:ObjectProperty ;
+           rdfs:domain :Investment ;
+           rdfs:range :FinancialInstitution ;
+           rdfs:comment "Investment is managed by financial institution" ;
+           rdfs:label "managed by" .
+
+
+###  http://www.semanticweb.org/financial_risk#operatesIn
+:operatesIn rdf:type owl:ObjectProperty ;
+            rdfs:domain :Bank ;
+            rdfs:range :Country ;
+            rdfs:comment "Bank operates in a country" ;
+            rdfs:label "operates in" .
+
+
+###  http://www.semanticweb.org/financial_risk#performsTransaction
+:performsTransaction rdf:type owl:ObjectProperty ;
+                     rdfs:domain :Person ;
+                     rdfs:range :Transaction ;
+                     rdfs:comment "Person performs a transaction" ;
+                     rdfs:label "performs transaction" .
+
+
+###  http://www.semanticweb.org/financial_risk#recommendsSimilar
+:recommendsSimilar rdf:type owl:ObjectProperty ,
+                            owl:SymmetricProperty ;
+                   rdfs:domain :FinancialEntity ;
+                   rdfs:range :FinancialEntity ;
+                   rdfs:comment "Financial entity recommends similar entities" ;
+                   rdfs:label "recommends similar" .
+
+
+###  http://www.semanticweb.org/financial_risk#regulatedBy
+:regulatedBy rdf:type owl:ObjectProperty ;
+             owl:inverseOf :regulates ;
+             rdfs:domain :SecondLevelBank ;
+             rdfs:range :CentralBank ;
+             rdfs:comment "Second level bank is regulated by central bank" ;
+             rdfs:label "regulated by" .
+
+
+###  http://www.semanticweb.org/financial_risk#regulates
+:regulates rdf:type owl:ObjectProperty .
+
+
+###  http://www.semanticweb.org/financial_risk#relatedToIndicator
+:relatedToIndicator rdf:type owl:ObjectProperty ;
+                    rdfs:range :EconomicIndicator ;
+                    rdfs:comment "Risk profile is related to economic indicator" ;
+                    rdfs:label "related to indicator" .
+
+
+###  http://www.semanticweb.org/financial_risk#securingAsset
+:securingAsset rdf:type owl:ObjectProperty ;
+               rdfs:domain :Mortgage ;
+               rdfs:range :RealEstateInvestment ;
+               rdfs:comment "Mortgage is secured by real estate asset" ;
+               rdfs:label "securing asset" .
+
+
+#################################################################
+#    Data properties
+#################################################################
+
+###  http://www.semanticweb.org/financial_risk#hasAge
+:hasAge rdf:type owl:DatatypeProperty ,
+                 owl:FunctionalProperty ;
+        rdfs:domain :Person ;
+        rdfs:range xsd:integer ;
+        rdfs:comment "Age of the person" ;
+        rdfs:label "has age" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasAmount
+:hasAmount rdf:type owl:DatatypeProperty ;
+           rdfs:domain :FinancialEntity ;
+           rdfs:range xsd:decimal ;
+           rdfs:comment "Financial amount in EUR" ,
+                        "Monetary amounts expressed in EUR" ;
+           rdfs:label "has amount" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasAnnualReturn
+:hasAnnualReturn rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Investment ;
+                 rdfs:range xsd:decimal ;
+                 rdfs:comment "Annual return percentage" ;
+                 rdfs:label "has annual return" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasCreditRating
+:hasCreditRating rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Person ;
+                 rdfs:range xsd:string ;
+                 rdfs:comment "Credit rating classification" ;
+                 rdfs:label "has credit rating" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasDateIssued
+:hasDateIssued rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Loan ;
+               rdfs:range xsd:dateTime ;
+               rdfs:comment "Date when loan was issued" ;
+               rdfs:label "has date issued" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasGDPValue
+:hasGDPValue rdf:type owl:DatatypeProperty ;
+             rdfs:domain :GDPIndicator ;
+             rdfs:range xsd:decimal ;
+             rdfs:comment "GDP value in billions EUR" ;
+             rdfs:label "has GDP value" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasInflationRate
+:hasInflationRate rdf:type owl:DatatypeProperty ;
+                  rdfs:domain :InflationIndicator ;
+                  rdfs:range xsd:decimal ;
+                  rdfs:comment "Inflation rate as percentage" ;
+                  rdfs:label "has inflation rate" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasInterestRate
+:hasInterestRate rdf:type owl:DatatypeProperty ;
+                 rdfs:domain :Loan ;
+                 rdfs:range xsd:decimal ;
+                 rdfs:comment "Interest rate as percentage" ,
+                              "Interest rate expressed as annual percentage" ;
+                 rdfs:label "has interest rate" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasLoanStatus
+:hasLoanStatus rdf:type owl:DatatypeProperty ;
+               rdfs:domain :Loan ;
+               rdfs:range xsd:string ;
+               rdfs:comment "Current status of the loan" ;
+               rdfs:label "has loan status" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasLoanTerm
+:hasLoanTerm rdf:type owl:DatatypeProperty ;
+             rdfs:domain :Loan ;
+             rdfs:range xsd:integer ;
+             rdfs:comment "Loan term in months" ;
+             rdfs:label "has loan term" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasMaturityDate
+:hasMaturityDate rdf:type owl:DatatypeProperty ;
+                 rdfs:domain [ rdf:type owl:Class ;
+                               owl:unionOf ( :Bond
+                                             :Loan
+                                           )
+                             ] ;
+                 rdfs:range xsd:dateTime ;
+                 rdfs:comment "Maturity date of financial instrument" ;
+                 rdfs:label "has maturity date" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasName
+:hasName rdf:type owl:DatatypeProperty ,
+                  owl:FunctionalProperty ;
+         rdfs:domain owl:Thing ;
+         rdfs:range xsd:string ;
+         rdfs:comment "Name of the entity" ;
+         rdfs:label "has name" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasRiskScore
+:hasRiskScore rdf:type owl:DatatypeProperty ,
+                       owl:FunctionalProperty ;
+              rdfs:range xsd:decimal ;
+              rdfs:comment "Risk score from 0.0 to 10.0" ,
+                           "Risk score ranges from 0.0 (lowest risk) to 10.0 (highest risk)" ;
+              rdfs:label "has risk score" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasTransactionDate
+:hasTransactionDate rdf:type owl:DatatypeProperty ;
+                    rdfs:domain :Transaction ;
+                    rdfs:range xsd:dateTime ;
+                    rdfs:comment "Date of the transaction" ;
+                    rdfs:label "has transaction date" .
+
+
+###  http://www.semanticweb.org/financial_risk#hasUnemploymentRate
+:hasUnemploymentRate rdf:type owl:DatatypeProperty ;
+                     rdfs:domain :UnemploymentIndicator ;
+                     rdfs:range xsd:decimal ;
+                     rdfs:comment "Unemployment rate as percentage" ;
+                     rdfs:label "has unemployment rate" .
+
+
+#################################################################
+#    Classes
+#################################################################
+
+###  http://www.omg.org/spec/EDMC-FIBO/CreditRisk
+fibo:CreditRisk rdf:type owl:Class ;
+                owl:equivalentClass :CreditRisk .
+
+
+###  http://www.omg.org/spec/EDMC-FIBO/InterestRateRisk
+fibo:InterestRateRisk rdf:type owl:Class ;
+                      owl:equivalentClass :InterestRateRisk .
+
+
+###  http://www.semanticweb.org/financial_risk#Bank
+:Bank rdf:type owl:Class ;
+      rdfs:subClassOf :FinancialInstitution ;
+      rdfs:comment "Commercial or central banks" ;
+      rdfs:label "Bank" .
+
+
+###  http://www.semanticweb.org/financial_risk#Bond
+:Bond rdf:type owl:Class ;
+      rdfs:subClassOf :Investment ;
+      rdfs:comment "Debt securities" ;
+      rdfs:label "Bond" .
+
+
+###  http://www.semanticweb.org/financial_risk#Business
+:Business rdf:type owl:Class ;
+          rdfs:subClassOf :Customer .
+
+
+###  http://www.semanticweb.org/financial_risk#BusinessLoan
+:BusinessLoan rdf:type owl:Class ;
+              rdfs:subClassOf :Loan ;
+              rdfs:comment "Loan for business purposes" ;
+              rdfs:label "Business Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#CentralBank
+:CentralBank rdf:type owl:Class ;
+             rdfs:subClassOf :Bank ;
+             rdfs:comment "National central banks like Bank of Albania" ;
+             rdfs:label "Central Bank" .
+
+
+###  http://www.semanticweb.org/financial_risk#Country
+:Country rdf:type owl:Class ;
+         rdfs:comment "National territory" ;
+         rdfs:label "Country" .
+
+
+###  http://www.semanticweb.org/financial_risk#CreditRisk
+:CreditRisk rdf:type owl:Class ;
+            rdfs:subClassOf :RiskCategory ;
+            rdfs:comment "Credit risk assessment based on BASEL III guidelines" ,
+                         "Mapped to FIBO Credit Risk" ,
+                         "Risk of default on obligations" ;
+            rdfs:label "Credit Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#Customer
+:Customer rdf:type owl:Class ;
+          rdfs:label "Customers" .
+
+
+###  http://www.semanticweb.org/financial_risk#Deposit
+:Deposit rdf:type owl:Class ;
+         rdfs:subClassOf :Transaction ;
+         rdfs:comment "Deposit transaction" ;
+         rdfs:label "Deposit" .
+
+
+###  http://www.semanticweb.org/financial_risk#DiversifiedInvestor
+:DiversifiedInvestor rdf:type owl:Class ;
+                     rdfs:subClassOf :Person ,
+                                     [ rdf:type owl:Restriction ;
+                                       owl:onProperty :hasInvestment ;
+                                       owl:minCardinality "3"^^xsd:nonNegativeInteger
+                                     ] .
+
+
+###  http://www.semanticweb.org/financial_risk#EconomicIndicator
+:EconomicIndicator rdf:type owl:Class ;
+                   rdfs:comment "Macroeconomic indicators" ;
+                   rdfs:label "Economic Indicator" .
+
+
+###  http://www.semanticweb.org/financial_risk#FinancialEntity
+:FinancialEntity rdf:type owl:Class ;
+                 rdfs:comment "Abstract class representing any financial entity" ;
+                 rdfs:label "Financial Entity" .
+
+
+###  http://www.semanticweb.org/financial_risk#FinancialInstitution
+:FinancialInstitution rdf:type owl:Class ;
+                      owl:equivalentClass <https://spec.edmcouncil.org/fibo/ontology/FinancialServiceProvider> ;
+                      rdfs:subClassOf :FinancialEntity ;
+                      rdfs:comment "Banks, credit unions, and other financial institutions" ;
+                      rdfs:label "Financial Institution" .
+
+
+###  http://www.semanticweb.org/financial_risk#FinancialProduct
+:FinancialProduct rdf:type owl:Class ;
+                  rdfs:subClassOf :FinancialEntity .
+
+
+###  http://www.semanticweb.org/financial_risk#GDPIndicator
+:GDPIndicator rdf:type owl:Class ;
+              rdfs:subClassOf :EconomicIndicator ;
+              rdfs:comment "Gross Domestic Product indicator" ;
+              rdfs:label "GDP Indicator" .
+
+
+###  http://www.semanticweb.org/financial_risk#GeneralRisk
+:GeneralRisk rdf:type owl:Class ;
+             rdfs:subClassOf :RiskCategory ;
+             rdfs:comment "General financial risk" ;
+             rdfs:label "General Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#GovernmentBond
+:GovernmentBond rdf:type owl:Class ;
+                rdfs:subClassOf :Bond ;
+                rdfs:comment "Bonds issued by government entities" ;
+                rdfs:label "Government Bond" .
+
+
+###  http://www.semanticweb.org/financial_risk#HighInterestLoan
+:HighInterestLoan rdf:type owl:Class ;
+                  rdfs:subClassOf :Loan ,
+                                  [ rdf:type owl:Restriction ;
+                                    owl:onProperty :hasInterestRate ;
+                                    owl:someValuesFrom [ rdf:type rdfs:Datatype ;
+                                                         owl:onDatatype xsd:decimal ;
+                                                         owl:withRestrictions ( [ xsd:minInclusive 8.0
+                                                                                ]
+                                                                              )
+                                                       ]
+                                  ] .
+
+
+###  http://www.semanticweb.org/financial_risk#InflationIndicator
+:InflationIndicator rdf:type owl:Class ;
+                    rdfs:subClassOf :EconomicIndicator ;
+                    rdfs:comment "Inflation rate indicator" ;
+                    rdfs:label "Inflation Indicator" .
+
+
+###  http://www.semanticweb.org/financial_risk#InsurancePolicy
+:InsurancePolicy rdf:type owl:Class ;
+                 rdfs:subClassOf :FinancialProduct ;
+                 rdfs:comment "Insurance coverage policy" ;
+                 rdfs:label "Insurance Policy" .
+
+
+###  http://www.semanticweb.org/financial_risk#InterestRateRisk
+:InterestRateRisk rdf:type owl:Class ;
+                  rdfs:subClassOf :RiskCategory ;
+                  rdfs:comment "Mapped to FIBO Interest Rate Risk" ,
+                               "Risk from interest rate changes" ;
+                  rdfs:label "Interest Rate Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#Investment
+:Investment rdf:type owl:Class ;
+            rdfs:subClassOf :FinancialProduct ;
+            rdfs:comment "Financial investment instrument" ;
+            rdfs:label "Investment" .
+
+
+###  http://www.semanticweb.org/financial_risk#LiquidityRisk
+:LiquidityRisk rdf:type owl:Class ;
+               rdfs:subClassOf :RiskCategory ;
+               rdfs:comment "Risk of inability to meet short-term obligations" ;
+               rdfs:label "Liquidity Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#Loan
+:Loan rdf:type owl:Class ;
+      owl:equivalentClass <https://spec.edmcouncil.org/fibo/ontology/Loan> ;
+      rdfs:subClassOf :FinancialProduct ;
+      rdfs:comment "Financial loan with terms and conditions" ;
+      rdfs:label "Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#LowInterestLoan
+:LowInterestLoan rdf:type owl:Class ;
+                 rdfs:subClassOf :Loan .
+
+
+###  http://www.semanticweb.org/financial_risk#MarketRisk
+:MarketRisk rdf:type owl:Class ;
+            rdfs:subClassOf :RiskCategory ;
+            rdfs:comment "Market risk following EU financial regulations" ,
+                         "Risk from market volatility" ;
+            rdfs:label "Market Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#Mortgage
+:Mortgage rdf:type owl:Class ;
+          rdfs:subClassOf :Loan ;
+          rdfs:comment "Real estate secured loan" ;
+          rdfs:label "Mortgage" .
+
+
+###  http://www.semanticweb.org/financial_risk#MutualFund
+:MutualFund rdf:type owl:Class ;
+            rdfs:subClassOf :Investment ;
+            rdfs:comment "Pooled investment vehicle" ;
+            rdfs:label "Mutual Fund" .
+
+
+###  http://www.semanticweb.org/financial_risk#Payment
+:Payment rdf:type owl:Class ;
+         rdfs:subClassOf :Transaction ;
+         rdfs:comment "Outgoing payment transaction" ;
+         rdfs:label "Payment" .
+
+
+###  http://www.semanticweb.org/financial_risk#Pension
+:Pension rdf:type owl:Class ;
+         rdfs:subClassOf :RetirementAccount ;
+         rdfs:comment "Employer-sponsored retirement plan" ;
+         rdfs:label "Pension" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person
+:Person rdf:type owl:Class ;
+        rdfs:subClassOf :Customer ;
+        rdfs:comment "Individual person with financial profiles" ;
+        rdfs:label "Person" .
+
+
+###  http://www.semanticweb.org/financial_risk#PersonWithMultipleLoans
+:PersonWithMultipleLoans rdf:type owl:Class ;
+                         rdfs:subClassOf :Person ,
+                                         [ rdf:type owl:Restriction ;
+                                           owl:onProperty :hasLoan ;
+                                           owl:minCardinality "2"^^xsd:nonNegativeInteger
+                                         ] .
+
+
+###  http://www.semanticweb.org/financial_risk#PersonalLoan
+:PersonalLoan rdf:type owl:Class ;
+              rdfs:subClassOf :Loan ;
+              rdfs:comment "Unsecured personal loan" ;
+              rdfs:label "Personal Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#RealEstateInvestment
+:RealEstateInvestment rdf:type owl:Class ;
+                      rdfs:subClassOf :Investment ;
+                      rdfs:comment "Property investment" ;
+                      rdfs:label "Real Estate Investment" .
+
+
+###  http://www.semanticweb.org/financial_risk#RetirementAccount
+:RetirementAccount rdf:type owl:Class ;
+                   rdfs:subClassOf :FinancialProduct ;
+                   rdfs:comment "Retirement savings account" ;
+                   rdfs:label "Retirement Account" .
+
+
+###  http://www.semanticweb.org/financial_risk#RiskCategory
+:RiskCategory rdf:type owl:Class ;
+              rdfs:comment "Classification of financial risks" ;
+              rdfs:label "Risk Category" .
+
+
+###  http://www.semanticweb.org/financial_risk#SecondLevelBank
+:SecondLevelBank rdf:type owl:Class ;
+                 rdfs:subClassOf :Bank ;
+                 rdfs:comment "Commercial banks operating under central bank regulation" ;
+                 rdfs:label "Second Level Bank" .
+
+
+###  http://www.semanticweb.org/financial_risk#Stock
+:Stock rdf:type owl:Class ;
+       rdfs:subClassOf :Investment ;
+       rdfs:comment "Equity shares in companies" ;
+       rdfs:label "Stock" .
+
+
+###  http://www.semanticweb.org/financial_risk#Transaction
+:Transaction rdf:type owl:Class ;
+             rdfs:subClassOf :FinancialEntity ;
+             rdfs:comment "Financial transaction" ;
+             rdfs:label "Transaction" .
+
+
+###  http://www.semanticweb.org/financial_risk#UnemploymentIndicator
+:UnemploymentIndicator rdf:type owl:Class ;
+                       rdfs:subClassOf :EconomicIndicator ;
+                       rdfs:comment "Unemployment rate indicator" ;
+                       rdfs:label "Unemployment Indicator" .
+
+
+###  http://www.semanticweb.org/financial_risk#Withdrawal
+:Withdrawal rdf:type owl:Class ;
+            rdfs:subClassOf :Transaction ;
+            rdfs:comment "Withdrawal transaction" ;
+            rdfs:label "Withdrawal" .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/FinancialServiceProvider
+<https://spec.edmcouncil.org/fibo/ontology/FinancialServiceProvider> rdf:type owl:Class ;
+                                                                     rdfs:subClassOf :FinancialEntity .
+
+
+###  https://spec.edmcouncil.org/fibo/ontology/Loan
+<https://spec.edmcouncil.org/fibo/ontology/Loan> rdf:type owl:Class .
+
+
+#################################################################
+#    Individuals
+#################################################################
+
+###  http://www.semanticweb.org/financial_risk#Albania
+:Albania rdf:type owl:NamedIndividual ,
+                  :Country ;
+         :hasName "Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#AlbaniaGDP2023
+:AlbaniaGDP2023 rdf:type owl:NamedIndividual ,
+                         :GDPIndicator ;
+                :hasGDPValue 17.8 ;
+                :hasName "Albania GDP 2023" .
+
+
+###  http://www.semanticweb.org/financial_risk#AlbaniaGDP2024
+:AlbaniaGDP2024 rdf:type owl:NamedIndividual ,
+                         :GDPIndicator ;
+                :relatedToIndicator :AlbaniaInflation2024 ;
+                :hasGDPValue 18.2 ;
+                :hasName "Albania GDP 2024" .
+
+
+###  http://www.semanticweb.org/financial_risk#AlbaniaInflation2023
+:AlbaniaInflation2023 rdf:type owl:NamedIndividual ,
+                               :InflationIndicator ;
+                      :hasInflationRate 4.2 ;
+                      :hasName "Albania Inflation 2023" .
+
+
+###  http://www.semanticweb.org/financial_risk#AlbaniaInflation2024
+:AlbaniaInflation2024 rdf:type owl:NamedIndividual ,
+                               :InflationIndicator ;
+                      :hasInflationRate 2.8 ;
+                      :hasName "Albania Inflation 2024" .
+
+
+###  http://www.semanticweb.org/financial_risk#AlbaniaUnemployment2024
+:AlbaniaUnemployment2024 rdf:type owl:NamedIndividual ,
+                                  :UnemploymentIndicator ;
+                         :hasName "Albania Unemployment 2024" ;
+                         :hasUnemploymentRate 11.2 .
+
+
+###  http://www.semanticweb.org/financial_risk#AlphaBank
+:AlphaBank rdf:type owl:NamedIndividual ,
+                    :SecondLevelBank ;
+           :operatesIn :Albania ;
+           :regulatedBy :BankOfAlbania ;
+           :hasName "Alpha Bank Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#BankOfAlbania
+:BankOfAlbania rdf:type owl:NamedIndividual ,
+                        :CentralBank ;
+               :operatesIn :Albania ;
+               :hasName "Bank of Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#Bond_001
+:Bond_001 rdf:type owl:NamedIndividual ,
+                   :GovernmentBond ;
+          :exposedToRisk :InterestRateRisk_001 ;
+          :hasAmount 10000.00 ;
+          :hasAnnualReturn 3.4 ;
+          :hasMaturityDate "2025-12-31T00:00:00"^^xsd:dateTime ;
+          :hasName "Albanian Government Bond 2025" .
+
+
+###  http://www.semanticweb.org/financial_risk#Bond_002
+:Bond_002 rdf:type owl:NamedIndividual ,
+                   :GovernmentBond ;
+          :hasAmount 15000.00 ;
+          :hasAnnualReturn 2.8 ;
+          :hasMaturityDate "2025-06-01T00:00:00"^^xsd:dateTime ;
+          :hasName "Treasury Bill 1Y" .
+
+
+###  http://www.semanticweb.org/financial_risk#BusinessLoan_001
+:BusinessLoan_001 rdf:type owl:NamedIndividual ,
+                           :BusinessLoan ;
+                  :exposedToRisk :GeneralRisk_001 ;
+                  :issuedBy :RaiffeisenBankAlbania ;
+                  :hasAmount 85000.00 ;
+                  :hasInterestRate 5.9 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 120 ;
+                  :hasName "SME Expansion Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#BusinessLoan_002
+:BusinessLoan_002 rdf:type owl:NamedIndividual ,
+                           :BusinessLoan ,
+                           :HighInterestLoan ;
+                  :issuedBy :AlphaBank ;
+                  :hasAmount 45000.00 ;
+                  :hasInterestRate 8.5 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 60 ;
+                  :hasName "Restaurant Equipment Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#BusinessLoan_003
+:BusinessLoan_003 rdf:type owl:NamedIndividual ,
+                           :BusinessLoan ;
+                  :issuedBy :IntesaSanpaoloAlbania ;
+                  :hasAmount 120000.00 ;
+                  :hasInterestRate 7.8 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 96 ;
+                  :hasName "Technology Startup Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#BusinessLoan_004
+:BusinessLoan_004 rdf:type owl:NamedIndividual ,
+                           :BusinessLoan ;
+                  :issuedBy :UniCredit ;
+                  :hasAmount 65000.00 ;
+                  :hasInterestRate 5.2 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 144 ;
+                  :hasName "Agriculture Development Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#CreditRisk_001
+:CreditRisk_001 rdf:type owl:NamedIndividual ,
+                         :CreditRisk ;
+                :influencedBy :AlbaniaUnemployment2024 ;
+                :hasName "Albania Credit Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#Deposit_001
+:Deposit_001 rdf:type owl:NamedIndividual ,
+                      :Deposit ;
+             :hasAmount 1250.00 ;
+             :hasName "Salary Deposit" ;
+             :hasTransactionDate "2024-01-01T00:00:00"^^xsd:dateTime .
+
+
+###  http://www.semanticweb.org/financial_risk#EuroAreaGDP2024
+:EuroAreaGDP2024 rdf:type owl:NamedIndividual ,
+                          :GDPIndicator ;
+                 :hasGDPValue 13200.0 ;
+                 :hasName "Euro Area GDP 2024" .
+
+
+###  http://www.semanticweb.org/financial_risk#EuroAreaInflation2024
+:EuroAreaInflation2024 rdf:type owl:NamedIndividual ,
+                                :InflationIndicator ;
+                       :hasInflationRate 2.4 ;
+                       :hasName "Euro Area Inflation 2024" .
+
+
+###  http://www.semanticweb.org/financial_risk#EuropeanCentralBank
+:EuropeanCentralBank rdf:type owl:NamedIndividual ,
+                              :CentralBank ;
+                     :operatesIn :EuropeanUnion ;
+                     :hasName "European Central Bank" .
+
+
+###  http://www.semanticweb.org/financial_risk#EuropeanUnion
+:EuropeanUnion rdf:type owl:NamedIndividual ,
+                        :Country ;
+               :hasName "European Union" .
+
+
+###  http://www.semanticweb.org/financial_risk#GeneralRisk_001
+:GeneralRisk_001 rdf:type owl:NamedIndividual ,
+                          :GeneralRisk ;
+                 :influencedBy :AlbaniaGDP2024 ;
+                 :hasName "General Economic Risk Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#HighRiskProfile_001
+:HighRiskProfile_001 rdf:type owl:NamedIndividual ;
+                     :hasRiskCategory :MarketRisk_001 ;
+                     :hasName "Aggressive Risk Profile" ;
+                     :hasRiskScore 8.5 .
+
+
+###  http://www.semanticweb.org/financial_risk#Insurance_001
+:Insurance_001 rdf:type owl:NamedIndividual ,
+                        :InsurancePolicy ;
+               :exposedToRisk :GeneralRisk_001 ;
+               :hasAmount 50000.00 ;
+               :hasName "Life Insurance Policy" .
+
+
+###  http://www.semanticweb.org/financial_risk#Insurance_002
+:Insurance_002 rdf:type owl:NamedIndividual ,
+                        :InsurancePolicy ;
+               :exposedToRisk :GeneralRisk_001 ;
+               :hasAmount 125000.00 ;
+               :hasName "Property Insurance" .
+
+
+###  http://www.semanticweb.org/financial_risk#Insurance_003
+:Insurance_003 rdf:type owl:NamedIndividual ,
+                        :InsurancePolicy ;
+               :hasAmount 25000.00 ;
+               :hasName "Health Insurance Premium" .
+
+
+###  http://www.semanticweb.org/financial_risk#Insurance_004
+:Insurance_004 rdf:type owl:NamedIndividual ,
+                        :InsurancePolicy ;
+               :hasAmount 15000.00 ;
+               :hasName "Vehicle Insurance" .
+
+
+###  http://www.semanticweb.org/financial_risk#Insurance_005
+:Insurance_005 rdf:type owl:NamedIndividual ,
+                        :InsurancePolicy ;
+               :hasAmount 75000.00 ;
+               :hasName "Business Liability Insurance" .
+
+
+###  http://www.semanticweb.org/financial_risk#InterestRateRisk_001
+:InterestRateRisk_001 rdf:type owl:NamedIndividual ,
+                               :InterestRateRisk ;
+                      :influencedBy :AlbaniaInflation2024 ;
+                      :hasName "Albania Interest Rate Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#IntesaSanpaoloAlbania
+:IntesaSanpaoloAlbania rdf:type owl:NamedIndividual ,
+                                :SecondLevelBank ;
+                       :operatesIn :Albania ;
+                       :regulatedBy :BankOfAlbania ;
+                       :hasName "Intesa Sanpaolo Bank Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#LiquidityRisk_001
+:LiquidityRisk_001 rdf:type owl:NamedIndividual ,
+                            :LiquidityRisk ;
+                   :influencedBy :AlbaniaGDP2024 ;
+                   :hasName "Albania Liquidity Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#LowRiskProfile_001
+:LowRiskProfile_001 rdf:type owl:NamedIndividual ;
+                    :hasRiskCategory :GeneralRisk_001 ;
+                    :hasName "Conservative Risk Profile" ;
+                    :hasRiskScore 2.1 .
+
+
+###  http://www.semanticweb.org/financial_risk#MarketRisk_001
+:MarketRisk_001 rdf:type owl:NamedIndividual ,
+                         :MarketRisk ;
+                :influencedBy :AlbaniaGDP2024 ;
+                :hasName "Albania Market Risk" .
+
+
+###  http://www.semanticweb.org/financial_risk#ModerateRiskProfile_001
+:ModerateRiskProfile_001 rdf:type owl:NamedIndividual ;
+                         :hasRiskCategory :GeneralRisk_001 ,
+                                          :MarketRisk_001 ;
+                         :hasName "Moderate Risk Profile" ;
+                         :hasRiskScore 5.2 .
+
+
+###  http://www.semanticweb.org/financial_risk#ModerateRiskProfile_002
+:ModerateRiskProfile_002 rdf:type owl:NamedIndividual ;
+                         :hasRiskCategory :InterestRateRisk_001 ;
+                         :hasName "Balanced Risk Profile" ;
+                         :hasRiskScore 4.8 .
+
+
+###  http://www.semanticweb.org/financial_risk#Mortgage_001
+:Mortgage_001 rdf:type owl:NamedIndividual ,
+                       :Mortgage ;
+              :exposedToRisk :InterestRateRisk_001 ;
+              :issuedBy :RaiffeisenBankAlbania ;
+              :recommendsSimilar :Mortgage_002 ;
+              :securingAsset :RealEstate_001 ;
+              :hasAmount 95000.00 ;
+              :hasDateIssued "2023-03-15T00:00:00"^^xsd:dateTime ;
+              :hasInterestRate 4.2 ;
+              :hasLoanStatus "Active" ;
+              :hasLoanTerm 300 ;
+              :hasMaturityDate "2048-03-15T00:00:00"^^xsd:dateTime ;
+              :hasName "Tirana Home Mortgage" .
+
+
+###  http://www.semanticweb.org/financial_risk#Mortgage_002
+:Mortgage_002 rdf:type owl:NamedIndividual ,
+                       :Mortgage ;
+              :issuedBy :IntesaSanpaoloAlbania ;
+              :securingAsset :RealEstate_002 ;
+              :hasAmount 67000.00 ;
+              :hasInterestRate 3.8 ;
+              :hasLoanStatus "Active" ;
+              :hasLoanTerm 240 ;
+              :hasName "Durres Apartment Mortgage" .
+
+
+###  http://www.semanticweb.org/financial_risk#Mortgage_003
+:Mortgage_003 rdf:type owl:NamedIndividual ,
+                       :Mortgage ;
+              :issuedBy :AlphaBank ;
+              :hasAmount 125000.00 ;
+              :hasInterestRate 4.5 ;
+              :hasLoanStatus "Active" ;
+              :hasLoanTerm 360 ;
+              :hasName "Vlora Villa Mortgage" .
+
+
+###  http://www.semanticweb.org/financial_risk#MutualFund_001
+:MutualFund_001 rdf:type owl:NamedIndividual ,
+                         :MutualFund ;
+                :exposedToRisk :MarketRisk_001 ;
+                :managedBy :IntesaSanpaoloAlbania ;
+                :recommendsSimilar :MutualFund_002 ;
+                :hasAmount 7500.00 ;
+                :hasAnnualReturn 8.1 ;
+                :hasName "Balkan Growth Fund" .
+
+
+###  http://www.semanticweb.org/financial_risk#MutualFund_002
+:MutualFund_002 rdf:type owl:NamedIndividual ,
+                         :MutualFund ;
+                :managedBy :RaiffeisenBankAlbania ;
+                :hasAmount 12000.00 ;
+                :hasAnnualReturn 5.9 ;
+                :hasName "Albanian Equity Fund" .
+
+
+###  http://www.semanticweb.org/financial_risk#OperationalRisk_001
+:OperationalRisk_001 rdf:type owl:NamedIndividual ,
+                              :RiskCategory ;
+                     :influencedBy :AlbaniaUnemployment2024 ;
+                     :hasName "Operational Risk Banking Sector" .
+
+
+###  http://www.semanticweb.org/financial_risk#Payment_001
+:Payment_001 rdf:type owl:NamedIndividual ,
+                      :Payment ;
+             :hasAmount 580.00 ;
+             :hasName "Mortgage Monthly Payment" ;
+             :hasTransactionDate "2024-01-15T00:00:00"^^xsd:dateTime .
+
+
+###  http://www.semanticweb.org/financial_risk#Pension_001
+:Pension_001 rdf:type owl:NamedIndividual ,
+                      :Pension ;
+             :exposedToRisk :GeneralRisk_001 ;
+             :hasAmount 35000.00 ;
+             :hasName "State Pension Scheme" .
+
+
+###  http://www.semanticweb.org/financial_risk#Pension_002
+:Pension_002 rdf:type owl:NamedIndividual ,
+                      :Pension ;
+             :exposedToRisk :MarketRisk_001 ;
+             :managedBy :RaiffeisenBankAlbania ;
+             :hasAmount 28000.00 ;
+             :hasName "Private Pension Fund" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_001
+:Person_001 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasInsurancePolicy :Insurance_001 ;
+            :hasInvestment :Bond_002 ;
+            :hasLoan :Mortgage_001 ;
+            :hasRetirementAccount :Pension_001 ;
+            :hasRiskProfile :LowRiskProfile_001 ;
+            :performsTransaction :Payment_001 ;
+            :hasAge 35 ;
+            :hasCreditRating "A" ;
+            :hasName "Arjan Berisha" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_002
+:Person_002 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasInsurancePolicy :Insurance_002 ;
+            :hasInvestment :Stock_002 ;
+            :hasLoan :PersonalLoan_001 ;
+            :hasRiskProfile :HighRiskProfile_001 ;
+            :performsTransaction :Withdrawal_001 ;
+            :hasAge 42 ;
+            :hasCreditRating "B+" ;
+            :hasName "Elona Kadiu" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_003
+:Person_003 rdf:type owl:NamedIndividual ,
+                     :PersonWithMultipleLoans ;
+            :hasInsurancePolicy :Insurance_003 ;
+            :hasLoan :Mortgage_002 ,
+                     :PersonalLoan_002 ;
+            :performsTransaction :Deposit_001 ;
+            :hasAge 38 ;
+            :hasCreditRating "B" ;
+            :hasName "Klajdi Hoxha" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_004
+:Person_004 rdf:type owl:NamedIndividual ,
+                     :DiversifiedInvestor ;
+            :hasInsurancePolicy :Insurance_004 ;
+            :hasInvestment :Bond_001 ,
+                           :MutualFund_001 ,
+                           :RealEstate_001 ,
+                           :Stock_001 ;
+            :hasLoan :BusinessLoan_001 ;
+            :hasRetirementAccount :Pension_002 ;
+            :hasAge 45 ;
+            :hasCreditRating "A+" ;
+            :hasName "Migena Sulejmani" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_005
+:Person_005 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasInsurancePolicy :Insurance_005 ;
+            :hasInvestment :MutualFund_002 ;
+            :hasLoan :PersonalLoan_003 ;
+            :hasAge 29 ;
+            :hasCreditRating "B+" ;
+            :hasName "Gentian Leka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_006
+:Person_006 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 31 ;
+            :hasCreditRating "A-" ;
+            :hasName "Ana Vokshi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_007
+:Person_007 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 47 ;
+            :hasCreditRating "B" ;
+            :hasName "Besnik Hoti" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_008
+:Person_008 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 33 ;
+            :hasCreditRating "A" ;
+            :hasName "Donika Spahiu" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_009
+:Person_009 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 41 ;
+            :hasCreditRating "B+" ;
+            :hasName "Endrit Myftiu" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_010
+:Person_010 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 36 ;
+            :hasCreditRating "A-" ;
+            :hasName "Fatjona Kulla" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_011
+:Person_011 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 52 ;
+            :hasCreditRating "A" ;
+            :hasName "Genti Malaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_012
+:Person_012 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 28 ;
+            :hasCreditRating "B+" ;
+            :hasName "Hana Sulaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_013
+:Person_013 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 44 ;
+            :hasCreditRating "A-" ;
+            :hasName "Ilir Basha" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_014
+:Person_014 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 37 ;
+            :hasCreditRating "B" ;
+            :hasName "Jona Brahimi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_015
+:Person_015 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 39 ;
+            :hasCreditRating "A+" ;
+            :hasName "Klea Hysi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_016
+:Person_016 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 48 ;
+            :hasCreditRating "B+" ;
+            :hasName "Luan Koci" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_017
+:Person_017 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 34 ;
+            :hasCreditRating "A" ;
+            :hasName "Marisa Tafa" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_018
+:Person_018 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 41 ;
+            :hasCreditRating "B" ;
+            :hasName "Nard Ndoka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_019
+:Person_019 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 30 ;
+            :hasCreditRating "A-" ;
+            :hasName "Ornela Frasheri" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_020
+:Person_020 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 46 ;
+            :hasCreditRating "B+" ;
+            :hasName "Petrit Duka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_021
+:Person_021 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 43 ;
+            :hasCreditRating "A-" ;
+            :hasName "Qendrim Salihi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_022
+:Person_022 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 32 ;
+            :hasCreditRating "B+" ;
+            :hasName "Rina Muca" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_023
+:Person_023 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 38 ;
+            :hasCreditRating "A" ;
+            :hasName "Saimir Tahiri" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_024
+:Person_024 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 45 ;
+            :hasCreditRating "B" ;
+            :hasName "Teuta Leka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_025
+:Person_025 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 27 ;
+            :hasCreditRating "B+" ;
+            :hasName "Valdrin Peka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_026
+:Person_026 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 41 ;
+            :hasCreditRating "A+" ;
+            :hasName "Xhilda Cara" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_027
+:Person_027 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 49 ;
+            :hasCreditRating "A" ;
+            :hasName "Ylber Hoxha" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_028
+:Person_028 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 35 ;
+            :hasCreditRating "B+" ;
+            :hasName "Zana Brahaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_029
+:Person_029 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 51 ;
+            :hasCreditRating "A-" ;
+            :hasName "Agron Dervishi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_030
+:Person_030 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 29 ;
+            :hasCreditRating "B" ;
+            :hasName "Besa Shehu" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_031
+:Person_031 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 36 ;
+            :hasCreditRating "A" ;
+            :hasName "Clirim Zeneli" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_032
+:Person_032 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 42 ;
+            :hasCreditRating "B+" ;
+            :hasName "Denisa Kola" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_033
+:Person_033 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 33 ;
+            :hasCreditRating "A-" ;
+            :hasName "Eduart Mema" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_034
+:Person_034 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 47 ;
+            :hasCreditRating "B" ;
+            :hasName "Flutura Tola" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_035
+:Person_035 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 28 ;
+            :hasCreditRating "B+" ;
+            :hasName "Gersi Hila" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_036
+:Person_036 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 54 ;
+            :hasCreditRating "A+" ;
+            :hasName "Hysen Lami" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_037
+:Person_037 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 31 ;
+            :hasCreditRating "A" ;
+            :hasName "Irma Sina" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_038
+:Person_038 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 40 ;
+            :hasCreditRating "B+" ;
+            :hasName "Jurgen Koci" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_039
+:Person_039 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 37 ;
+            :hasCreditRating "A-" ;
+            :hasName "Ketrina Balla" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_040
+:Person_040 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 44 ;
+            :hasCreditRating "B" ;
+            :hasName "Lorenc Sulo" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_041
+:Person_041 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 39 ;
+            :hasCreditRating "A" ;
+            :hasName "Manjola Topalli" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_042
+:Person_042 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 46 ;
+            :hasCreditRating "B+" ;
+            :hasName "Neritan Ceka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_043
+:Person_043 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 34 ;
+            :hasCreditRating "A-" ;
+            :hasName "Ornela Demi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_044
+:Person_044 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 52 ;
+            :hasCreditRating "A+" ;
+            :hasName "Pellumb Xhafa" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_045
+:Person_045 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 48 ;
+            :hasCreditRating "B" ;
+            :hasName "Qemal Stafa" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_046
+:Person_046 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 30 ;
+            :hasCreditRating "A" ;
+            :hasName "Rovena Dilo" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_047
+:Person_047 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 41 ;
+            :hasCreditRating "B+" ;
+            :hasName "Spartak Ngjela" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_048
+:Person_048 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 38 ;
+            :hasCreditRating "A-" ;
+            :hasName "Taulant Balla" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_049
+:Person_049 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 45 ;
+            :hasCreditRating "B" ;
+            :hasName "Ujka Backa" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_050
+:Person_050 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 35 ;
+            :hasCreditRating "A" ;
+            :hasName "Valbona Zeneli" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_051
+:Person_051 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 42 ;
+            :hasCreditRating "B+" ;
+            :hasName "Walbur Kelmendi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_052
+:Person_052 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 39 ;
+            :hasCreditRating "A-" ;
+            :hasName "Xhevdet Shehi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_053
+:Person_053 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 46 ;
+            :hasCreditRating "B" ;
+            :hasName "Ylli Rakipi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_054
+:Person_054 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 33 ;
+            :hasCreditRating "A" ;
+            :hasName "Zamira Kita" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_055
+:Person_055 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 50 ;
+            :hasCreditRating "A+" ;
+            :hasName "Arben Malaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_056
+:Person_056 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 37 ;
+            :hasCreditRating "B+" ;
+            :hasName "Brunilda Pali" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_057
+:Person_057 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 44 ;
+            :hasCreditRating "A" ;
+            :hasName "Claudio Nikolla" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_058
+:Person_058 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 31 ;
+            :hasCreditRating "B" ;
+            :hasName "Dorina Memia" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_059
+:Person_059 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 48 ;
+            :hasCreditRating "A-" ;
+            :hasName "Evis Kushi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_060
+:Person_060 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 35 ;
+            :hasCreditRating "B+" ;
+            :hasName "Flamur Golemi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_061
+:Person_061 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 42 ;
+            :hasCreditRating "A" ;
+            :hasName "Gjergj Bojaxhi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_062
+:Person_062 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 29 ;
+            :hasCreditRating "B" ;
+            :hasName "Herion Mustafaraj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_063
+:Person_063 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 36 ;
+            :hasCreditRating "A-" ;
+            :hasName "Iris Luarasi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_064
+:Person_064 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 53 ;
+            :hasCreditRating "A+" ;
+            :hasName "Jozef Topalli" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_065
+:Person_065 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 40 ;
+            :hasCreditRating "B+" ;
+            :hasName "Klodian Muço" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_066
+:Person_066 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 47 ;
+            :hasCreditRating "A" ;
+            :hasName "Lindita Nikolla" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_067
+:Person_067 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 34 ;
+            :hasCreditRating "B" ;
+            :hasName "Maks Velo" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_068
+:Person_068 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 41 ;
+            :hasCreditRating "A-" ;
+            :hasName "Nora Malaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_069
+:Person_069 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 38 ;
+            :hasCreditRating "B+" ;
+            :hasName "Olti Kokona" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_070
+:Person_070 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 45 ;
+            :hasCreditRating "A" ;
+            :hasName "Pranvera Strakosha" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_071
+:Person_071 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 32 ;
+            :hasCreditRating "B" ;
+            :hasName "Qazim Sejdini" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_072
+:Person_072 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 49 ;
+            :hasCreditRating "A+" ;
+            :hasName "Rezart Taci" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_073
+:Person_073 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 36 ;
+            :hasCreditRating "A-" ;
+            :hasName "Suela Jonuzi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_074
+:Person_074 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 43 ;
+            :hasCreditRating "B+" ;
+            :hasName "Tahir Muhedini" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_075
+:Person_075 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 30 ;
+            :hasCreditRating "A" ;
+            :hasName "Ulpiana Lushaku" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_076
+:Person_076 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 47 ;
+            :hasCreditRating "B" ;
+            :hasName "Valon Krasniqi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_077
+:Person_077 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 34 ;
+            :hasCreditRating "A-" ;
+            :hasName "Xhemile Shyti" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_078
+:Person_078 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 51 ;
+            :hasCreditRating "A+" ;
+            :hasName "Ylber Marku" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_079
+:Person_079 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 38 ;
+            :hasCreditRating "B+" ;
+            :hasName "Zenepe Kryemadhi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_080
+:Person_080 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 45 ;
+            :hasCreditRating "A" ;
+            :hasName "Alban Skenderaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_081
+:Person_081 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 42 ;
+            :hasCreditRating "B" ;
+            :hasName "Bajram Begaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_082
+:Person_082 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 39 ;
+            :hasCreditRating "A-" ;
+            :hasName "Celjana Brace" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_083
+:Person_083 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 46 ;
+            :hasCreditRating "B+" ;
+            :hasName "Dritan Prifti" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_084
+:Person_084 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 33 ;
+            :hasCreditRating "A" ;
+            :hasName "Enkeleda Shehi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_085
+:Person_085 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 50 ;
+            :hasCreditRating "A+" ;
+            :hasName "Florian Xhafa" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_086
+:Person_086 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 37 ;
+            :hasCreditRating "B" ;
+            :hasName "Gazmir Bardhi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_087
+:Person_087 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 44 ;
+            :hasCreditRating "A-" ;
+            :hasName "Habit Bejleri" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_088
+:Person_088 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 31 ;
+            :hasCreditRating "B+" ;
+            :hasName "Ilda Bozdo" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_089
+:Person_089 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 48 ;
+            :hasCreditRating "A" ;
+            :hasName "Jonida Maliqi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_090
+:Person_090 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 35 ;
+            :hasCreditRating "B" ;
+            :hasName "Klajdi Fejzo" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_091
+:Person_091 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 42 ;
+            :hasCreditRating "A-" ;
+            :hasName "Ledia Radi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_092
+:Person_092 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 29 ;
+            :hasCreditRating "B+" ;
+            :hasName "Mirela Kumbaro" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_093
+:Person_093 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 36 ;
+            :hasCreditRating "A" ;
+            :hasName "Nikolla Lesi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_094
+:Person_094 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 53 ;
+            :hasCreditRating "A+" ;
+            :hasName "Olta Xhaçka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_095
+:Person_095 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 40 ;
+            :hasCreditRating "B" ;
+            :hasName "Pandeli Majko" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_096
+:Person_096 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 47 ;
+            :hasCreditRating "A-" ;
+            :hasName "Qerim Ondozi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_097
+:Person_097 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 34 ;
+            :hasCreditRating "B+" ;
+            :hasName "Rudina Hajdari" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_098
+:Person_098 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 41 ;
+            :hasCreditRating "A" ;
+            :hasName "Sokol Dervishi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_099
+:Person_099 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 38 ;
+            :hasCreditRating "B" ;
+            :hasName "Taulant Muka" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_100
+:Person_100 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 45 ;
+            :hasCreditRating "A-" ;
+            :hasName "Valdete Idrizi" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_101
+:Person_101 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 32 ;
+            :hasCreditRating "B+" ;
+            :hasName "Xhevahir Zahaj" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_102
+:Person_102 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 49 ;
+            :hasCreditRating "A+" ;
+            :hasName "Ymer Dishnica" .
+
+
+###  http://www.semanticweb.org/financial_risk#Person_103
+:Person_103 rdf:type owl:NamedIndividual ,
+                     :Person ;
+            :hasAge 36 ;
+            :hasCreditRating "A" ;
+            :hasName "Zamira Rami" .
+
+
+###  http://www.semanticweb.org/financial_risk#PersonalLoan_001
+:PersonalLoan_001 rdf:type owl:NamedIndividual ,
+                           :PersonalLoan ;
+                  :exposedToRisk :CreditRisk_001 ;
+                  :issuedBy :TiranaBank ;
+                  :recommendsSimilar :PersonalLoan_002 ;
+                  :hasAmount 15000.00 ;
+                  :hasInterestRate 7.2 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 60 ;
+                  :hasName "Personal Loan - Education" .
+
+
+###  http://www.semanticweb.org/financial_risk#PersonalLoan_002
+:PersonalLoan_002 rdf:type owl:NamedIndividual ,
+                           :PersonalLoan ;
+                  :issuedBy :UniCredit ;
+                  :hasAmount 22000.00 ;
+                  :hasInterestRate 6.8 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 84 ;
+                  :hasName "Personal Loan - Car Purchase" .
+
+
+###  http://www.semanticweb.org/financial_risk#PersonalLoan_003
+:PersonalLoan_003 rdf:type owl:NamedIndividual ,
+                           :PersonalLoan ;
+                  :issuedBy :TiranaBank ;
+                  :hasAmount 8500.00 ;
+                  :hasInterestRate 9.2 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 36 ;
+                  :hasName "Medical Emergency Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#PersonalLoan_004
+:PersonalLoan_004 rdf:type owl:NamedIndividual ,
+                           :PersonalLoan ;
+                  :issuedBy :AlphaBank ;
+                  :hasAmount 18000.00 ;
+                  :hasInterestRate 6.5 ;
+                  :hasLoanStatus "Active" ;
+                  :hasLoanTerm 72 ;
+                  :hasName "Home Renovation Loan" .
+
+
+###  http://www.semanticweb.org/financial_risk#RaiffeisenBankAlbania
+:RaiffeisenBankAlbania rdf:type owl:NamedIndividual ,
+                                :SecondLevelBank ;
+                       :operatesIn :Albania ;
+                       :regulatedBy :BankOfAlbania ;
+                       :hasName "Raiffeisen Bank Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#RealEstate_001
+:RealEstate_001 rdf:type owl:NamedIndividual ,
+                         :RealEstateInvestment ;
+                :exposedToRisk :GeneralRisk_001 ;
+                :hasAmount 180000.00 ;
+                :hasAnnualReturn 4.8 ;
+                :hasName "Tirana Commercial Property" .
+
+
+###  http://www.semanticweb.org/financial_risk#RealEstate_002
+:RealEstate_002 rdf:type owl:NamedIndividual ,
+                         :RealEstateInvestment ;
+                :hasAmount 95000.00 ;
+                :hasAnnualReturn 6.2 ;
+                :hasName "Saranda Beachfront Apartment" .
+
+
+###  http://www.semanticweb.org/financial_risk#RealEstate_003
+:RealEstate_003 rdf:type owl:NamedIndividual ,
+                         :RealEstateInvestment ;
+                :hasAmount 45000.00 ;
+                :hasAnnualReturn 3.8 ;
+                :hasName "Shkoder Industrial Plot" .
+
+
+###  http://www.semanticweb.org/financial_risk#Stock_001
+:Stock_001 rdf:type owl:NamedIndividual ,
+                    :Stock ;
+           :exposedToRisk :MarketRisk_001 ;
+           :managedBy :RaiffeisenBankAlbania ;
+           :recommendsSimilar :Stock_002 ;
+           :hasAmount 5500.00 ;
+           :hasAnnualReturn 6.2 ;
+           :hasName "Alb Telecom Shares" .
+
+
+###  http://www.semanticweb.org/financial_risk#Stock_002
+:Stock_002 rdf:type owl:NamedIndividual ,
+                    :Stock ;
+           :exposedToRisk :MarketRisk_001 ;
+           :hasAmount 3200.00 ;
+           :hasAnnualReturn 4.8 ;
+           :hasName "ARMO Energy Shares" .
+
+
+###  http://www.semanticweb.org/financial_risk#Stock_003
+:Stock_003 rdf:type owl:NamedIndividual ,
+                    :Stock ;
+           :exposedToRisk :MarketRisk_001 ;
+           :hasAmount 4500.00 ;
+           :hasAnnualReturn 7.3 ;
+           :hasName "Credins Bank Shares" .
+
+
+###  http://www.semanticweb.org/financial_risk#TiranaBank
+:TiranaBank rdf:type owl:NamedIndividual ,
+                     :SecondLevelBank ;
+            :operatesIn :Albania ;
+            :regulatedBy :BankOfAlbania ;
+            :hasName "Tirana Bank" .
+
+
+###  http://www.semanticweb.org/financial_risk#UniCredit
+:UniCredit rdf:type owl:NamedIndividual ,
+                    :SecondLevelBank ;
+           :operatesIn :Albania ;
+           :regulatedBy :BankOfAlbania ;
+           :hasName "UniCredit Bank Albania" .
+
+
+###  http://www.semanticweb.org/financial_risk#Withdrawal_001
+:Withdrawal_001 rdf:type owl:NamedIndividual ,
+                         :Withdrawal ;
+                :hasAmount 200.00 ;
+                :hasName "ATM Withdrawal" ;
+                :hasTransactionDate "2024-01-20T00:00:00"^^xsd:dateTime .
+
+
+###  Generated by the OWL API (version 4.5.29.2024-05-13T12:11:03Z) https://github.com/owlcs/owlapi
